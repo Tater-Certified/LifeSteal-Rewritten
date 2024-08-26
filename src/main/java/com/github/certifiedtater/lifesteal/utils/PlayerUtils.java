@@ -29,11 +29,8 @@ public final class PlayerUtils {
        }
 
        // Attacker Player
-       EntityAttributeInstance attackerMaxHealth = attacker.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
-       if (attackerMaxHealth.getBaseValue() >= gameRules.getInt(LifeStealGamerules.MAXPLAYERHEALTH)) {
-            // TODO Handle health too high
-       } else {
-           changeHealth(attacker, attackerMaxHealth, gameRules.getInt(LifeStealGamerules.STEALAMOUNT));
+       if (!changeHealth(attacker, gameRules.getInt(LifeStealGamerules.STEALAMOUNT))) {
+           attacker.sendMessage(LifeStealText.MAX_HEALTH, true);
        }
     }
 
@@ -42,5 +39,21 @@ public final class PlayerUtils {
         attribute.setBaseValue(currentValue + by);
         float health = player.getHealth();
         player.setHealth(health + by);
+    }
+
+    public static boolean changeHealth(ServerPlayerEntity player, float by) {
+        EntityAttributeInstance maxHealthAttribute = player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+        double maxHealth = maxHealthAttribute.getBaseValue();
+        if (canChangeHealth(maxHealth, by, player.getWorld().getGameRules())) {
+            changeHealth(player, maxHealthAttribute, by);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean canChangeHealth(double currentMaxHealth, float by, GameRules gameRules) {
+        double newMaxHealth = currentMaxHealth + by;
+        return newMaxHealth >= gameRules.getInt(LifeStealGamerules.MINPLAYERHEALTH) && newMaxHealth <= gameRules.getInt(LifeStealGamerules.MAXPLAYERHEALTH);
     }
 }
