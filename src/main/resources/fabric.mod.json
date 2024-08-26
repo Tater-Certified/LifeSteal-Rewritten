@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "lifesteal_reworked",
+  "version": "${version}",
+  "name": "lifesteal_reworked",
+  "description": "A server side only reimagining of the Lifesteal SMP",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/lifesteal_reworked/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.github.certifiedtater.lifesteal_reworked.Lifesteal"
+    ]
+  },
+  "mixins": [
+    "lifesteal_reworked.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
